@@ -185,6 +185,58 @@ Si pone quindi l'ingresso $A$ a $0$ logico e si invia all'ingresso $B$ un'onda q
 %	\end{center}
 %\end{Figure}
 
+%==================================================
+%             MULTIPLEXER A DUE INGRESSI
+%==================================================
+\section{Multiplexer a due ingressi}
+Si realizza un circuito multiplexer a due ingressi, 
+
+\begin{circuitikz}[scale=0.9]
+\draw (0,0) node[american nand port] (nand1) {}
+(2.2,1) node[american nand port] (nand2) {}
+(2.2,-1) node[american nand port] (nand3) {}
+(4,0) node[american nand port] (nand4) {}
+(nand1.in 1) to[short] (nand1.in 2)  
+(nand1.in 1 |- nand1.out) to [short,*-] (-3,0) to [short,*-*] (-2,0) 
+(-3,0) node[left]{$S$}
+(nand1.out) -| (nand3.in 1)
+(nand3.in 2) to[short, -*] ++(-3,0) node[left]{$A$}
+(nand2.in 1) to[short, -*] ++(-3,0) node[left]{$B$}
+(nand2.in 2) -| (-2,0)
+(nand3.out) -| (nand4.in 2)
+(nand2.out) -| (nand4.in 1)
+(nand4.out) to[R=$R$] ++(1,0) to[leDo] ++(0,-2) node[ground] {}
+;\end{circuitikz}
+
+
+%==================================================
+%             FLIP-FLOP S-R
+%==================================================
+\section{Flip-Flop Set-Reset}
+
+\begin{circuitikz}
+\draw (0,1.6) node[american nand port] (nand1) {}
+(0,-1.6) node[american nand port] (nand2) {}
+(2,1) node[american nand port] (nand3) {}
+(2,-1) node[american nand port] (nand4) {}
+(nand1.in 1) to[short, -*] ++(-0.5,0) node[left] {$S$}
+(nand2.in 2) to[short, -*] ++(-0.5,0) node[left] {$R$}
+(nand1.in 2) -- (nand2.in 1) 
+(nand1.in 2) ++(0,-1.4) -- ++(-0.5,0) node[circ] {} node[left]{\texttt{CLK}}
+(nand1.out) -| (nand3.in 1)
+(nand2.out) -| (nand4.in 2)
+(nand3.in 2) -- ++(0,-0.5) node[](in1){}
+(nand4.in 1) -- ++(0,0.5) node[](in2){}
+(nand3.out) -- ++(0,-0.5) node[](out1){}
+(nand4.out) -- ++(0,0.5) node[](out2){}
+(in1) to[short] (out2)
+(in2) to[short] (out1)
+(nand3.out) to[R=$R_1$] ++(1,0) to[leDo] ++(2,0) node[](end){};
+\draw (nand4.out) to[R=$R_2$] ++(1,0) to[leDo] ++(2,0) node[ground](ground) {}
+(end) to[short] (ground)
+;\end{circuitikz}
+
+
 
 
 
