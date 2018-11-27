@@ -36,6 +36,7 @@
 \setlist{noitemsep}
 \usepackage{amsmath}
 
+
 \interfootnotelinepenalty=10000
 
 
@@ -77,7 +78,7 @@ stepnumber=2, numbersep=5pt, frame=shadowbox,  showstringspaces=false, #1}}{}
 \vspace{0.5cm}
 \renewcommand{\abstractname}{Abstract}
 \begin{abstract}
-Si studiano i livelli di commutazione delle porte logiche TTL dell'integrato 74LS00. Si realizza un circuito XOR con porte NAND e un multiplexer a due ingressi. Si costruisce un flip-flop set-reset con porte NAND.
+Si studiano i livelli di commutazione delle porte logiche TTL dell'integrato SN7400. Si realizza un circuito XOR con porte NAND e un multiplexer a due ingressi. Si costruisce un flip-flop set-reset con porte NAND.
 \end{abstract}
 \vspace{4cm}
 \tableofcontents %Indice
@@ -90,19 +91,19 @@ Si studiano i livelli di commutazione delle porte logiche TTL dell'integrato 74L
 %             LIVELLI COMMUTAZIONE TTL
 %==================================================
 \section{Livello di commutazione delle porte logiche TTL}
-Si utilizzerà per tutta l'esperienza l'integrato 74LS00, che è alimentato con una tensione di \SI{5}{V}, mentre il \texttt{GND} è posto a massa, comune ai generatori di tensione e di segnali e all'oscilloscopio. Per visualizzare rapidamente il livello delle uscite saranno utilizzati dei LED, protetti da resistenze dell'ordine di \SI{500}{\ohm} verso massa. Inoltre, per realizzare gli ingressi statici si utilizza una resistenza di pull-up di \SI{0.997 \pm 0.005}{\kilo\ohm} connessa a \SI{5}{V}: questa resistenza è fondamentale sia per poter usare un interruttore verso massa collegato all'ingresso e dunque velocizzare la commutazione degli stati logici (senza questa resistenza ad interruttore chiuso si creerebbe un corto circuito del generatore verso massa), sia perché in sua assenza il circuito costruito con l'integrato può perturbare in maniera non facilmente prevedibile il segnale in ingresso\footnote{Ad esempio, usando il generatore per inviare un'onda quadra in ingresso ad un multiplexer, senza la resistenza di pull-up il segnale generato verrebbe distorto fortemente, come verificabile sperimentalmente.}.
+Si utilizzerà per tutta l'esperienza l'integrato SN7400, che è alimentato con una tensione di \SI{5}{V}, mentre il \texttt{GND} è posto a massa, comune ai generatori di tensione e di segnali e all'oscilloscopio. Per visualizzare rapidamente il livello delle uscite saranno utilizzati dei LED, protetti da resistenze dell'ordine di \SI{500}{\ohm} verso massa. Inoltre, per realizzare gli ingressi statici si utilizza una resistenza di pull-up di \SI{0.997 \pm 0.005}{\kilo\ohm} connessa a \SI{5}{V}: questa resistenza è fondamentale sia per poter usare un interruttore verso massa collegato all'ingresso e dunque velocizzare la commutazione degli stati logici (senza questa resistenza ad interruttore chiuso si creerebbe un corto circuito del generatore verso massa), sia perché in sua assenza il circuito costruito con l'integrato può perturbare in maniera non facilmente prevedibile il segnale in ingresso\footnote{Ad esempio, usando il generatore per inviare un'onda quadra in ingresso ad un multiplexer, senza la resistenza di pull-up il segnale generato verrebbe distorto fortemente, come verificabile sperimentalmente.}.
 
 Si studia il livello di commutazione di una porta NOT realizzata utilizzando una porta NAND dell'integrato, mandando ad entrambi gli ingressi la stessa tensione $V_i$, compresa tra \SI{0}{} e \SI{5}{V} mediante un alimentatore diverso da quello utilizzato per alimentare l'integrato. Al variare della tensione $V_i$ si studia il conseguente andamento della tensione di uscita $V_o$, evidenziando i valori per cui si ha il passaggio dal livello logico $0$ a $1$ o viceversa. Il circuito è il seguente.
 
-%\begin{circuitikz}
-%\draw (0,0) node[ground]{} to[battery2=$V_i$, invert] (0,1.2) 
-%(3,1.2) node[american nand port] (nand) {}
-%(nand.in 1) to[short] (nand.in 2)  
-%(nand.in 1 |- nand.out) to [short,-] (0,1.2)
-%(nand.out) to[short, -*] ++(0.5,0) node[right]{$V_o$}
-%;\end{circuitikz}
+\begin{circuitikz}
+\draw (0,0) node[ground]{} to[battery2=$V_i$, invert] (0,1.2) 
+(3,1.2) node[american nand port] (nand) {}
+(nand.in 1) to[short] (nand.in 2)  
+(nand.in 1 |- nand.out) to [short,-] (0,1.2)
+(nand.out) to[short, -*] ++(0.5,0) node[right]{$V_o$}
+;\end{circuitikz}
 
-Si riportano in Tabella~\ref{tab:commutazione} i punti sperimentali individuati, e nel grafico di Figura~\ref{fig:commutazione} l'andamento della tensione in uscita in funzione della tensione di ingresso: il grafico è in scala semilog per poter apprezzare meglio la curva di discesa alle basse frequenze. Si osserva che il valore logico $1$ dell'uscita corrisponde ad una tensione di \SI{3.71 \pm 0.06}{V}, ottenuta dalla media dei primi $7$ punti, per i quali $V_o$ è costante all'aumentare di $V_i$, prima di raggiungere la regione in cui si ha la rapida decrescita. Allo stesso modo, prendendo la media degli ultimi $10$ punti, successivi alla regione di decrescita e nella zona di costanza di $V_o$, si ottiene per il valore logico $0$ una tensione corrispondente di \SI{58.8 \pm 0.3}{mV}.
+Si riportano in Tabella~\ref{tab:commutazione}, in Appendice, i punti sperimentali individuati, e nel grafico di Figura~\ref{fig:commutazione} l'andamento della tensione in uscita in funzione della tensione di ingresso: il grafico è in scala semilog per poter apprezzare meglio la curva di discesa per valori vicini allo zero della tensione in ingresso. Si osserva che il valore logico $1$ dell'uscita corrisponde ad una tensione di \SI{3.71 \pm 0.06}{V}, ottenuta dalla media dei primi $8$ punti, per i quali $V_o$ è circa costante all'aumentare di $V_i$, prima di raggiungere la regione in cui si ha la rapida decrescita. Allo stesso modo, prendendo la media degli ultimi $10$ punti, successivi alla regione di decrescita e nella zona di costanza di $V_o$, si ottiene per il valore logico $0$ una tensione corrispondente di \SI{58.8 \pm 0.3}{mV}.
 
 Si confrontano i risultati ottenuti con le definizioni dello standard logico TTL, per le quali si ha un valore di $0$ logico (nel caso analizzato corrispondente all'$1$ in uscita dalla porta NOT) per una tensione di \SI{0.2}{V}, e un valore di $1$ logico (nel caso analizzato corrispondente allo $0$ in uscita dalla porta NOT) per una tensione di \SI{5}{V}. I valori misurati risultano lontani dallo standard TTL ideale, ma risultano invece compatibili con i valori riportati sul \emph{datasheet} dell'integrato \cite{WEBSITE:1}.
 
@@ -132,7 +133,7 @@ Per vedere la curva caratteristica della porta NAND integralmente e in maniera p
 
 \begin{Figure}
 	\begin{center}
-	\includegraphics[width=\linewidth]{triangolareNAND.png}
+	\includegraphics[width=0.9\linewidth]{triangolareNAND.png}
 	\captionof{figure}{Istantanea dell'oscilloscopio per visualizzare la curva caratteristica di un circuito XOR mandando in ingresso un'onda triangolare}
 	\label{fig:triangolare}
 	\end{center}
@@ -159,23 +160,23 @@ Q &= \overline{\overline{A\left(\overline{AB}\right)}\cdot \overline{B\left(\ove
 \]
 dove l'uguaglianza si ottiene applicando le Leggi di De Morgan. Il circuito è il seguente,
 
-%\begin{circuitikz}
-%\draw (0,0) node[american nand port] (nand1) {}
-%(1.7,1) node[american nand port] (nand2) {}
-%(1.7,-1) node[american nand port] (nand3) {}
-%(3.4,0) node[american nand port] (nand4) {}
-%(nand1.in 1) to[short, *-] ++(-0.5,0) node[left] {$A$}
-%(nand1.in 2) to[short, *-] ++(-0.5,0) node[left] {$B$}
-%(nand1.out) -| (nand2.in 2) 
-%(nand1.out) -| (nand3.in 1) 
-%(nand2.in 1) -| (nand1.in 1)
-%(nand3.in 2) -| (nand1.in 2)
-%(nand2.out) -| (nand4.in 1)
-%(nand3.out) -| (nand4.in 2)
-%(nand4.out) to[R=$R$] ++(1,0) to[leDo] ++(0,-2) node[ground] {}
-%;\end{circuitikz}
+\begin{circuitikz}
+\draw (0,0) node[american nand port] (nand1) {}
+(1.7,1) node[american nand port] (nand2) {}
+(1.7,-1) node[american nand port] (nand3) {}
+(3.4,0) node[american nand port] (nand4) {}
+(nand1.in 1) to[short, *-] ++(-0.5,0) node[left] {$A$}
+(nand1.in 2) to[short, *-] ++(-0.5,0) node[left] {$B$}
+(nand1.out) -| (nand2.in 2) 
+(nand1.out) -| (nand3.in 1) 
+(nand2.in 1) -| (nand1.in 1)
+(nand3.in 2) -| (nand1.in 2)
+(nand2.out) -| (nand4.in 1)
+(nand3.out) -| (nand4.in 2)
+(nand4.out) to[R=$R$] ++(1,0) to[leDo] ++(0,-2) node[ground] {}
+;\end{circuitikz}
 
-dove la resistenza scelta per proteggere il diodo vale $R = \SI{111 \pm 111}{\kilo\ohm}$, e non ha influenza rilevabile sul comportamento del circuito.
+dove la resistenza scelta per proteggere il diodo vale $R = \SI{478 \pm 2}{\ohm}$, e non ha influenza rilevabile sul comportamento del circuito.
 
 Si verifica che il circuito si comporti come previsto dalla tavola della verità dello XOR applicando i valori logici $0$ e $1$ mediante livelli in continua (con gli ingressi statici muniti di resistenza di pull-out descritti prima), e misurando con il multimetro la tensione in uscita\footnote{Si usa infatti il LED solo come verifica rapida del funzionamento del circuito, ma per compiere le misure ci si rivolge ad uno strumento.}. Si riportano in Tabella~\ref{tab:xor} i valori di tensione relativi ai diversi livelli logici. Gli ingressi $A$ e $B$ vengono alimentati con lo stesso generatore di tensione, impostato a \SI{5.01 \pm 0.03}{V} per il livello logico $1$; per metterli a livello $0$ si utilizza la messa a terra dell'ingresso di pull-up.
 
@@ -198,7 +199,7 @@ Si pone quindi l'ingresso $A$ a $0$ logico e si invia all'ingresso $B$ un'onda q
 
 \begin{Figure}
 	\begin{center}
-	\includegraphics[width=\linewidth]{xor1.png}
+	\includegraphics[width=0.9\linewidth]{xor1.png}
 	\captionof{figure}{Istantanea dell'oscilloscopio per il circuito XOR, ingresso $A=0$}
 	\label{fig:XOR_A0}
 	\end{center}
@@ -206,11 +207,13 @@ Si pone quindi l'ingresso $A$ a $0$ logico e si invia all'ingresso $B$ un'onda q
 
 \begin{Figure}
 	\begin{center}
-	\includegraphics[width=\linewidth]{xor2.png}
+	\includegraphics[width=0.9\linewidth]{xor2.png}
 	\captionof{figure}{Istantanea dell'oscilloscopio per il circuito XOR, ingresso $A=1$}
 	\label{fig:XOR_A1}
 	\end{center}
 \end{Figure}
+
+I segnali di ingresso e di uscita non si sovrappongono esattamente, ciò è dovuto al fatto che i livelli logici effettivi dell'integrato, misurati nella sezione precedente, differiscono dai valori di tensione tra cui oscilla l'onda quadra in ingresso.
 
 
 %==================================================
@@ -219,25 +222,22 @@ Si pone quindi l'ingresso $A$ a $0$ logico e si invia all'ingresso $B$ un'onda q
 \section{Multiplexer a due ingressi}
 Si realizza un circuito multiplexer a due ingressi, come da schema seguente.
 
-%\begin{flushleft}
-%\hspace*{-1cm}
-%\begin{circuitikz}[scale=0.9]
-%\draw (0,0) node[american nand port] (nand1) {}
-%(2.2,1) node[american nand port] (nand2) {}
-%(2.2,-1) node[american nand port] (nand3) {}
-%(4,0) node[american nand port] (nand4) {}
-%(nand1.in 1) to[short] (nand1.in 2)  
-%(nand1.in 1 |- nand1.out) to [short,*-] (-3,0) to [short,*-*] (-2,0) 
-%(-3,0) node[left]{$S$}
-%(nand1.out) -| (nand3.in 1)
-%(nand3.in 2) to[short, -*] ++(-3,0) node[left]{$A$}
-%(nand2.in 1) to[short, -*] ++(-3,0) node[left]{$B$}
-%(nand2.in 2) -| (-2,0)
-%(nand3.out) -| (nand4.in 2)
-%(nand2.out) -| (nand4.in 1)
-%(nand4.out) to[R=$R$] ++(1,0) to[leDo] ++(0,-2) node[ground] {}
-%;\end{circuitikz}
-%\end{flushleft}
+\begin{circuitikz}[scale=0.9]
+\draw (0,0) node[american nand port] (nand1) {}
+(2.2,1) node[american nand port] (nand2) {}
+(2.2,-1) node[american nand port] (nand3) {}
+(4,0) node[american nand port] (nand4) {}
+(nand1.in 1) to[short] (nand1.in 2)  
+(nand1.in 1 |- nand1.out) to [short,*-] (-3,0) to [short,*-*] (-2,0) 
+(-3,0) node[left]{$S$}
+(nand1.out) -| (nand3.in 1)
+(nand3.in 2) to[short, -*] ++(-3,0) node[left]{$A$}
+(nand2.in 1) to[short, -*] ++(-3,0) node[left]{$B$}
+(nand2.in 2) -| (-2,0)
+(nand3.out) -| (nand4.in 2)
+(nand2.out) -| (nand4.in 1)
+(nand4.out) to[R=$R$] ++(1,0) to[leDo] ++(0,-2) node[ground] {}
+;\end{circuitikz}
 
 Il circuito implementa la funzione logica ridotta ai minimi termini
 \[
@@ -246,8 +246,6 @@ Q = \overline{S}A + SB.
 L'ingresso di selezione $S$ permette di scegliere quale tra i livelli logici degli ingressi $A$ e $B$ riportare in uscita, in particolare, se $S = 0$ l'uscita sarà $Q = A$, al contrario, se $S = 1$, l'uscita sarà $Q = B$. Si riportano in Tabella~\ref{tab:multiplexer} i valori di tensione dell'uscita in corrispondenza delle diverse combinazioni dei livelli logici.
 
 \begin{center}
-\captionof{table}{Misure per il multiplexer}
-\label{tab:multiplexer}
 \begin{tabular}{c|c|c|c}
 $S$ & $A$ & $B$ & $V_Q$ [\SI{}{mV}]  \\
  & & & ($\pm 0.5\%$) \\
@@ -262,13 +260,15 @@ $S$ & $A$ & $B$ & $V_Q$ [\SI{}{mV}]  \\
 1 & 1 & 1 & $4.07 \times 10^3$ \\
 \hline
 \end{tabular}
+\captionof{table}{Misure per il multiplexer}
+\label{tab:multiplexer}
 \end{center}
 
 Si connette il canale \texttt{CH1} dell'oscilloscopio all'ingresso $A$ e il canale \texttt{CH2} all'uscita $Q$; si pone l'ingresso di selezione $S=0$ e si invia all'ingresso $A$ un'onda quadra TTL mediante il generatore di segnali; l'ingresso $B$ è posto a $0$ logico. Si riporta in Figura~\ref{fig:multiplexerA} uno screenshot dell'oscilloscopio per questa configurazione, dal quale si evince che l'uscita riproduce l'ingresso. 
 
 \begin{Figure}
 	\begin{center}
-	\includegraphics[width=\linewidth]{multiplexerTTLsuA.png}
+	\includegraphics[width=0.8\linewidth]{multiplexerTTLsuA.png}
 	\captionof{figure}{Istantanea dell'oscilloscopio per il multiplexer, $S = 0$}
 	\label{fig:multiplexerA}
 	\end{center}
@@ -278,24 +278,23 @@ Si ripete l'esperimento ponendo $S=1$, $A=0$ e inviando all'ingresso $B$ un'onda
 
 \begin{Figure}
 	\begin{center}
-	\includegraphics[width=\linewidth]{multiplexerTTLsuB.png}
+	\includegraphics[width=0.8\linewidth]{multiplexerTTLsuB.png}
 	\captionof{figure}{Istantanea dell'oscilloscopio per il multiplexer, $S = 1$}
 	\label{fig:multiplexerB}
 	\end{center}
 \end{Figure}
 
-I segnali di ingresso e di uscita non si sovrappongono esattamente, ciò è dovuto al fatto che i livelli logici effettivi dell'integrato, misurati nella sezione precedente, differiscono dai valori di tensione tra cui oscilla l'onda quadra in ingresso.
-
-Un'ulteriore verifica del circuito costruito può essere fatta ponendo l'ingresso $A$ a $0$ logico e inviando sull'ingresso $S$ e sull'ingresso $B$ due onde quadrate di frequenza rispettivamente $f_S$ e $f_B$, dove $f_S << f_B$. Un'istantanea dell'oscilloscopio in questa configurazione è riportata in Figura \ref{fig:multiplexer3}. Ciò che si vede è che l'onda quadra su $S$ fa commutare l'uscita tra il valore di $A$, che è nullo, e il valore di $B$, che è a sua volta un'onda quadra ma di frequenza più elevata rispetto a quella su $S$.
+Un'ulteriore verifica del circuito costruito può essere fatta ponendo l'ingresso $A$ a $0$ logico e inviando sull'ingresso $S$ e sull'ingresso $B$ due onde quadre di frequenza rispettivamente $f_S$ e $f_B$, dove $f_S \ll f_B$. Un'istantanea dell'oscilloscopio in questa configurazione è riportata in Figura \ref{fig:multiplexer3}. Ciò che si vede è che l'onda quadra su $S$ fa commutare l'uscita tra il valore di $A$, che è nullo, e il valore di $B$, che è a sua volta un'onda quadra ma di frequenza più elevata rispetto a quella su $S$.
 
 \begin{Figure}
 	\begin{center}
-	\includegraphics[width=\linewidth]{multiplexerBsu0QuadraSuAquadraSuSignal.png}
-	\captionof{figure}{Istantanea dell'oscilloscopio per il multiplexer, $A = 0$ e si mandano su $S$ e $B$ due onde quadre con frequenza sul primo ingresso nettamente minore di quella sul secondo}
+	\includegraphics[width=0.8\linewidth]{multiplexerBsu0QuadraSuAquadraSuSignal.png}
+	\captionof{figure}{Istantanea dell'oscilloscopio per il multiplexer, $A = 0$, $S$ e $B$ onde quadre}
 	\label{fig:multiplexer3}
 	\end{center}
 \end{Figure}
 
+\newpage
 %==================================================
 %             FLIP-FLOP S-R
 %==================================================
@@ -313,29 +312,29 @@ S_n & R_n & Q_{n+1} \\
 \]
 e viene implementata dal circuito sotto illustrato. 
 
-%\begin{circuitikz}[scale=0.9]
-%\draw (0,1.6) node[american nand port] (nand1) {}
-%(0,-1.6) node[american nand port] (nand2) {}
-%(2,1) node[american nand port] (nand3) {}
-%(2,-1) node[american nand port] (nand4) {}
-%(nand1.in 1) to[short, -*] ++(-0.5,0) node[left] {$S$}
-%(nand2.in 2) to[short, -*] ++(-0.5,0) node[left] {$R$}
-%(nand1.in 2) -- (nand2.in 1) 
-%(nand1.in 2) ++(0,-1.4) -- ++(-0.5,0) node[circ] {} node[left]{\texttt{CLK}}
-%(nand1.out) -| (nand3.in 1)
-%(nand2.out) -| (nand4.in 2)
-%(nand3.in 2) -- ++(0,-0.5) node[](in1){}
-%(nand4.in 1) -- ++(0,0.5) node[](in2){}
-%(nand3.out) -- ++(0,-0.5) node[](out1){}
-%(nand4.out) -- ++(0,0.5) node[](out2){}
-%(in1) to[short] (out2)
-%(in2) to[short] (out1)
-%(nand3.out) to[R=$R_1$] ++(1,0) to[leDo] ++(2,0) node[](end){};
-%\draw (nand4.out) to[R=$R_2$] ++(1,0) to[leDo] ++(2,0) node[ground](ground) {}
-%(end) to[short] (ground)
-%;\end{circuitikz}
+\begin{circuitikz}[scale=0.9]
+\draw (0,1.6) node[american nand port] (nand1) {}
+(0,-1.6) node[american nand port] (nand2) {}
+(2,1) node[american nand port] (nand3) {}
+(2,-1) node[american nand port] (nand4) {}
+(nand1.in 1) to[short, -*] ++(-0.5,0) node[left] {$S$}
+(nand2.in 2) to[short, -*] ++(-0.5,0) node[left] {$R$}
+(nand1.in 2) -- (nand2.in 1) 
+(nand1.in 2) ++(0,-1.4) -- ++(-0.5,0) node[circ] {} node[left]{\texttt{CLK}}
+(nand1.out) -| (nand3.in 1)
+(nand2.out) -| (nand4.in 2)
+(nand3.in 2) -- ++(0,-0.5) node[](in1){}
+(nand4.in 1) -- ++(0,0.5) node[](in2){}
+(nand3.out) -- ++(0,-0.5) node[](out1){}
+(nand4.out) -- ++(0,0.5) node[](out2){}
+(in1) to[short] (out2)
+(in2) to[short] (out1)
+(nand3.out) to[R=$R_1$] ++(1,0) to[leDo] ++(2,0) node[](end){};
+\draw (nand4.out) to[R=$R_2$] ++(1,0) to[leDo] ++(2,0) node[ground](ground) {}
+(end) to[short] (ground)
+;\end{circuitikz}
 
-Si utilizzando dei LED per verificare il corretto funzionamento del circuito, protetti verso massa dalle resistenze $R_1 = \SI{111 \pm 111}{\kilo\ohm}$ e $R_2 = \SI{111 \pm 111}{\kilo\ohm}$. Inizialmente si fornisce un impulso di clock manuale all'ingresso \texttt{CLK} mediante il generatore di tensione, utilizzando un ingresso statico con resistenza di pull-up e interruttore verso terra, come già descritto precedentemente. Si controlla dunque che il circuito si comporti come previsto, impostando alternativamente $S=1$, $R=0$ o $S=0$, $R=1$, azionando il clock e osservando il valore logico dell'uscita mediante un multimetro. Si riportano in Tabella~\ref{tab:flip-flop_controllo} i valori di tensione e i corrispondenti valori logici per le diverse configurazioni, ordinati temporalmente (secondo l'indice $n$).
+Si utilizzano dei LED per verificare il corretto funzionamento del circuito, protetti verso massa da resistenze di ordine \SI{500}{\ohm}. Inizialmente si fornisce un impulso di clock manuale all'ingresso \texttt{CLK} mediante il generatore di tensione, utilizzando un ingresso statico con resistenza di pull-up e interruttore verso terra, come già descritto precedentemente. Si controlla dunque che il circuito si comporti come previsto, impostando alternativamente $S=1$, $R=0$ o $S=0$, $R=1$, azionando il clock e osservando il valore logico dell'uscita mediante un multimetro. Si riportano in Tabella~\ref{tab:flip-flop_controllo} i valori di tensione e i corrispondenti valori logici per le diverse configurazioni, ordinati temporalmente (secondo l'indice $n$).
 
 \begin{center}
 \captionof{table}{Misure per il controllo del flip-flop}
@@ -356,13 +355,13 @@ Si connette quindi il segnale di set $S$ al \texttt{CH1} dell'oscilloscopio e l'
 
 \begin{Figure}
 	\begin{center}
-	\includegraphics[width=\linewidth]{FlipFlopTTLset.png}
+	\includegraphics[width=0.9\linewidth]{FlipFlopTTLset.png}
 	\captionof{figure}{Istantanea dell'oscilloscopio per il flip-flop, onda quadra TTL su $S$ e $\texttt{CLK} = 1$}
 	\label{fig:flip-flop1}
 	\end{center}
 \end{Figure}
 
-Analogamente ponendo $S=0$ e inviando all'ingresso $R$ un'onda quadra TTL si osserva un'uscita costante sullo zero logico, come osservabile in Figura \ref{fig:flip-flop2}
+Analogamente ponendo $S=0$ e inviando all'ingresso $R$ un'onda quadra TTL si osserva un'uscita costante sullo zero logico, come osservabile in Figura \ref{fig:flip-flop2}.
 
 \begin{Figure}
 	\begin{center}
@@ -373,7 +372,8 @@ Analogamente ponendo $S=0$ e inviando all'ingresso $R$ un'onda quadra TTL si oss
 \end{Figure}
 
 
-
+\bibliography{bib}
+\bibliographystyle{ieeetr}
 
 \end{multicols}
 
@@ -419,9 +419,6 @@ Analogamente ponendo $S=0$ e inviando all'ingresso $R$ un'onda quadra TTL si oss
 \end{tabular}
 \end{center}
 
-
-\bibliography{bib}
-\bibliographystyle{ieeetr}
 
 
 
