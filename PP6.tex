@@ -30,6 +30,8 @@
 \usepackage{circuitikz}
 \ctikzset{bipoles/resistor/height=0.2}
 \ctikzset{bipoles/resistor/width=0.4}
+\ctikzset{tripoles/american nand port/height=0.7}
+\ctikzset{tripoles/american nand port/width=0.8}
 \usepackage{enumitem} %Liste senza spazi verticali
 \setlist{noitemsep}
 \usepackage{amsmath}
@@ -189,8 +191,10 @@ Si pone quindi l'ingresso $A$ a $0$ logico e si invia all'ingresso $B$ un'onda q
 %             MULTIPLEXER A DUE INGRESSI
 %==================================================
 \section{Multiplexer a due ingressi}
-Si realizza un circuito multiplexer a due ingressi, 
+Si realizza un circuito multiplexer a due ingressi, come da schema seguente.
 
+\begin{flushleft}
+\hspace*{-1cm}
 \begin{circuitikz}[scale=0.9]
 \draw (0,0) node[american nand port] (nand1) {}
 (2.2,1) node[american nand port] (nand2) {}
@@ -207,14 +211,53 @@ Si realizza un circuito multiplexer a due ingressi,
 (nand2.out) -| (nand4.in 1)
 (nand4.out) to[R=$R$] ++(1,0) to[leDo] ++(0,-2) node[ground] {}
 ;\end{circuitikz}
+\end{flushleft}
+
+Il circuito implementa la funzione logica ridotta ai minimi termini
+\[
+Q = \overline{S}A + SB.
+\]
+L'ingresso di selezione $S$ permette di scegliere quale tra i livelli logici degli ingressi $A$ e $B$ riportare in uscita, in particolare, se $S = 0$ l'uscita sarà $Q = A$, al contrario, se $S = 1$, l'uscita sarà $Q = B$. 
+
+Si connette il canale \texttt{CH1} dell'oscilloscopio all'ingresso $A$ e il canale \texttt{CH2} all'uscita $Q$; si pone l'ingresso di selezione $S=0$ e si invia all'ingresso $A$ un'onda quadra TTL mediante il generatore di segnali; l'ingresso $B$ è posto a $0$ logico. Si riporta in Figura~\ref{fig:multiplexerA} uno screenshot dell'oscilloscopio per questa configurazione, dal quale si evince che l'uscita riproduce l'ingresso. 
+
+%\begin{Figure}
+%	\begin{center}
+%	\includegraphics[width=\linewidth]{}
+%	\captionof{figure}{Istantanea dell'oscilloscopio per il multiplexer, $S = 0$}
+%	\label{fig:multiplexerA}
+%	\end{center}
+%\end{Figure}
+
+Si ripete l'esperimento ponendo $S=1$, $A=0$ e inviando all'ingresso $B$ un'onda quadra TTL. In questo caso il canale \texttt{CH1} dell'oscilloscopio è collegato all'ingresso $B$. Si riporta in Figura~\ref{fig:multiplexerB} l'istantanea dell'oscilloscopio per questa configurazione; si osserva anche qui la sovrapposizione tra segnale in ingresso e in uscita.
+
+%\begin{Figure}
+%	\begin{center}
+%	\includegraphics[width=\linewidth]{}
+%	\captionof{figure}{Istantanea dell'oscilloscopio per il multiplexer, $S = 1$}
+%	\label{fig:multiplexerB}
+%	\end{center}
+%\end{Figure}
 
 
 %==================================================
 %             FLIP-FLOP S-R
 %==================================================
 \section{Flip-Flop Set-Reset}
+Si realizza un \emph{flip-flop} S-R utilizzando tutte e 4 le porte NAND dell'integrato. La tavola della verità è la seguente
+\[
+\begin{array}{cc|c}
+S_n & R_n & Q_{n+1} \\
+\hline
+0 & 0 & Q_n \\
+1 & 0 & 1 \\
+0 & 1 & 0 \\
+1 & 1 & ?
+\end{array}
+\]
+e viene implementata dal circuito sotto illustrato. 
 
-\begin{circuitikz}
+\begin{circuitikz}[scale=0.9]
 \draw (0,1.6) node[american nand port] (nand1) {}
 (0,-1.6) node[american nand port] (nand2) {}
 (2,1) node[american nand port] (nand3) {}
@@ -235,6 +278,31 @@ Si realizza un circuito multiplexer a due ingressi,
 \draw (nand4.out) to[R=$R_2$] ++(1,0) to[leDo] ++(2,0) node[ground](ground) {}
 (end) to[short] (ground)
 ;\end{circuitikz}
+
+Si utilizzando dei LED per verificare il corretto funzionamento del circuito, protetti verso massa dalle resistenze $R_1 = \SI{111 \pm 111}{\kilo\ohm}$ e $R_2 = \SI{111 \pm 111}{\kilo\ohm}$. Inizialmente si fornisce un impulso di clock manuale all'ingresso \texttt{CLK} mediante il generatore di tensione, utilizzando un ingresso statico con resistenza di pull-up e interruttore verso terra, come già descritto precedentemente. Si controlla dunque che il circuito si comporti come previsto, impostando alternativamente $S=1$, $R=0$ o $S=0$, $R=1$, azionando il clock e osservando il valore logico dell'uscita mediante un multimetro. Si riportano in Tabella~\ref{tab:flip-flop_controllo} i valori di tensione e i corrispondenti valori logici per le diverse configurazioni, ordinati temporalmente (secondo l'indice $n$).
+
+\begin{center}
+\captionof{table}{Misure per il controllo del flip-flop}
+\label{tab:flip-flop_controllo}
+\begin{tabular}{c|c|c|c}
+n & $V_S$ [\SI{}{V}] & $V_R$ [\SI{}{V}] & $V_Q$ [\SI{}{V}] \\
+\hline
+\hline
+\end{tabular}
+\end{center}
+
+Si connette quindi il segnale di set $S$ al \texttt{CH1} dell'oscilloscopio e l'uscita $Q$ al canale \texttt{CH2}. Si pone $R=0$, il clock $\texttt{CLK} = 1$ e si invia all'ingresso $S$ un'onda quadra TTL. Si riporta in Figura~\ref{fig:flip-flop1} un'istantanea dell'oscilloscopio per questa configurazione, e si osserva che l'uscita è costante e pari al livello logico $1$ in quanto i settaggi successivi al primo non influiscono sullo stato del flip-flop, come previsto dalla tavola della verità. 
+
+%\begin{Figure}
+%	\begin{center}
+%	\includegraphics[width=\linewidth]{}
+%	\captionof{figure}{Istantanea dell'oscilloscopio per il flip-flop, onda quadra TTL su $S$ e $\texttt{CLK} = 1$}
+%	\label{fig:flip-flop1}
+%	\end{center}
+%\end{Figure}
+
+
+
 
 
 
